@@ -1,0 +1,46 @@
+# This updates the "last updated *date*" line of the README.md file to whenever the last update of README.md was made.
+# Action template credit: ayushjain01/Self-Updating-Readme
+
+name: Update README Date
+
+# controls when the workflow will run
+on:
+  # will run whenever someone updates a wiki page ('README.MD')
+  gollum:
+
+  # allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# jobs to be run sequentially or in parallel
+jobs:
+  # create a single job called 'update_readme_date'
+  update_readme_date:
+    runs-on: ubuntu-latest
+
+    # steps tells the sequential order of tasks to be executed by the job
+    steps:
+      # checks-out the repo under $GITHUB_WORKSPACE, so the job can access it
+      - name: checkout repo content
+        uses: actions/checkout@v4
+
+      # install latest version of python for the runner to use
+      - name: setup python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+
+      # run a python script that will update the date in README.md
+      - name: execute python script
+        run: |
+          python update_readme.py
+
+      # commit and push changes to the repo
+      - name: commit and push
+        run: |-
+          git diff
+          git config --global user.email "brycegraffin2019@yahoo.com"
+          git config --global user.name "bryce-graffin"
+          git add -A
+          git commit -m "Update README.md with date it was last modified."
+          git push
+        
