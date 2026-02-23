@@ -6,7 +6,9 @@ name: Update README Date
 # controls when the workflow will run
 on:
   # will run whenever someone updates a wiki page ('README.MD')
-  gollum:
+  push:
+    paths:
+      - 'README.md'
 
   # allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
